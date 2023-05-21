@@ -1,0 +1,5 @@
+server:
+  port: 9086
+feign:
+  user-app:
+    url: http://localhost:9085

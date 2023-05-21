@@ -1,0 +1,263 @@
+openapi: "3.0.0"
+info:
+  title: API
+  description: user CRUD service
+  version: 1.0.0
+servers:
+  - url: localhost:9085
+    description: local
+tags:
+  - name: User
+    description: User api
+paths:
+  /api/v1/user/createUser:
+    post:
+      summary: create a user
+      operationId: createUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '201':
+          description: Created
+  /api/v1/user/getUserById/{id}:
+    get:
+      summary: get user by ID
+      operationId: getUserById
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+          description: The user ID
+      responses:
+        '202':
+          description: Accepted
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+
+  /api/v1/user/updateUser:
+    post:
+      summary: update user
+      operationId: updateUser
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: Updated
+
+  /api/v1/user/deleteUserById/{id}:
+    post:
+      summary: delete user by ID
+      operationId: deleteUserById
+      tags:
+        - User
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            description: The user ID
+      responses:
+        '200':
+          description: Deleted
+
+  /api/v1/user/getUserByCriteriaFilter:
+    post:
+      summary: get user by filter
+      operationId: getUserByFilter
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCriteriaFilter'
+      responses:
+        '200':
+          description: Found users
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/PageUserResponse'
+
+components:
+  schemas:
+    UserDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        password:
+          type: string
+        email:
+          type: string
+        dateOfBirth:
+          type: string
+          format: date
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountDto'
+    AccountDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        balance:
+          type: number
+        userId:
+          type: integer
+    EmailDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserDto'
+        email:
+          type: string
+    PhoneDto:
+      type: object
+      properties:
+        id:
+          type: integer
+        user:
+          $ref: '#/components/schemas/UserDto'
+        phone:
+          type: string
+    UserRequest:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserDto'
+    PageUserResponse:
+      allOf:
+        - $ref: '#/components/schemas/BasePage'
+        - type: object
+      properties:
+        content:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDto'
+    UserResponse:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/UserDto'
+
+        #####################filters
+    BaseFilter:
+      type: object
+      properties:
+        id:
+          type: integer
+        pageSize:
+          type: integer
+          default: 5
+        pageNumber:
+          type: integer
+          default: 0
+        sort:
+          type: array
+          items:
+            type: string
+    BasePage:
+      type: object
+      properties:
+        totalElements:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        size:
+          type: integer
+          format: int32
+        number:
+          type: integer
+          format: int32
+        sort:
+          $ref: '#/components/schemas/Sort'
+        first:
+          type: boolean
+        pageable:
+          $ref: '#/components/schemas/Pageable'
+        numberOfElements:
+          type: integer
+          format: int32
+        last:
+          type: boolean
+        empty:
+          type: boolean
+
+    UserCriteriaFilter:
+      type: object
+      allOf: # Combines the main `BaseFilter` schema with `UserCriteriaFilter`- specific properties
+        - $ref: '#/components/schemas/BaseFilter'
+        - type: object
+      properties:
+        likeName:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        likeEmail:
+          type: string
+        minBalance:
+          type: number
+        maxBalance:
+          type: number
+        equalsPhone:
+          type: string
+
+    Sort:
+      type: object
+      properties:
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+        empty:
+          type: boolean
+
+    Pageable:
+      type: object
+      properties:
+        offset:
+          type: integer
+        sort:
+          $ref: '#/components/schemas/Sort'
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        paged:
+          type: boolean
+        unpaged:
+          type: boolean

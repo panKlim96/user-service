@@ -1,0 +1,16 @@
+{
+  "user": {
+    "id": 1,
+    "name": "Говоров Гаврила Александрович",
+    "password": "err43fs",
+    "email": "govor@mail.ru",
+    "dateOfBirth": [1972,2,3],
+    "accounts": [
+      {
+        "id": 4,
+        "balance": 45.0,
+        "userId": 1
+      }
+    ]
+  }
+}

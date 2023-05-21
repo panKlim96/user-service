@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: admin
+    password: root
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  liquibase:
+    change-log: classpath:db.changelog/changelog-master.yml
+
+server:
+  port: 9085
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+  api-docs:
+    enabled: true
+

@@ -1,0 +1,14 @@
+{
+  "user": {
+    "name": "Астраханцев Илья Владимирович",
+    "password": "asdaso23ed",
+    "email": "astrahan@bk.ru",
+    "dateOfBirth": [2022,11,3],
+    "accounts": [
+      {
+        "id": 4,
+        "balance": 3434.43
+      }
+    ]
+  }
+}

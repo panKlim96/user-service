@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: classpath:db.changelog/changeSet/create-user-table.yml
+  - include:
+      file: classpath:db.changelog/changeSet/create-account-table.yml

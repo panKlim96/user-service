@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-account
+      author: Klim
+      changes:
+        - creat
+        - createTable:
+            tableName: ACCOUNT_ENTITY
+            schemaName: ACCOUNT
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: BALANCE
+                  type: numeric
+        - addForeignKeyConstraint:
+            baseColumnNames: ID
+            baseTableName: ACCOUNT_ENTITY
+            constraintName: FK_USER_ENTITY_ON_ACCOUNT
+            referencedColumnNames: ID
+            referencedTableName: USER_ENTITY
+  - changeSet:
+      id: drop-account
+      author: Klim
+      changes:
+        - dropTable:
+            cascadeConstraints: true
+            tableName: ACCOUNT_ENTITY
+  - changeSet:
+      id: create-account-with-schema
+      author: Klim
+      changes:
+        - createTable:
+            tableName: ACCOUNT_ENTITY
+            schemaName: ACCOUNT_ENTITY
+            columns:
+              - column:
+                  name: ID
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: BALANCE
+                  type: numeric
+        - addForeignKeyConstraint:
+            baseColumnNames: ID
+            baseTableName: ACCOUNT_ENTITY
+            constraintName: FK_USER_ENTITY_ON_ACCOUNT
+            referencedColumnNames: ID
+            referencedTableName: USER_ENTITY
