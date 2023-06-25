@@ -1,3 +1,0 @@
-feign:
-  user-app:
-    url: http://user-app:9085

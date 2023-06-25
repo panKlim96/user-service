@@ -1,5 +1,6 @@
 package ru.teachbase.go.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "USER_ENTITY", schema = "USER_ENTITY")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,6 @@ public class UserEntity {
     @Column(name = "DATE_OF_BIRTH")
     private LocalDate dateOfBirth;
 
-    //@OneToMany(targetEntity = AccountEntity.class, cascade = CascadeType.MERGE, orphanRemoval = true, mappedBy = "userEntity")
     @OneToMany( mappedBy = "userEntity", fetch = FetchType.LAZY)
     private List<AccountEntity> accounts;
 

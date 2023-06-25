@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
@@ -19,8 +20,11 @@ import static java.util.Objects.nonNull;
 
 public abstract class AbstractSpecification<T> implements Specification<T> {
     @Override
-    public Predicate toPredicate(Root root, CriteriaQuery query, CriteriaBuilder criteriaBuilder) {
-        return null;
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+        return getPredicates(root,query,cb)
+                .filter(Objects::nonNull)
+                .reduce(cb::and)
+                .orElseGet(cb::conjunction);
     }
 
     @NonNull
@@ -116,7 +120,7 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
     }
 
     protected boolean isPairNullOrContainsOnlyNullValues(Pair<?, ?> pair) {
-        if (isNull(pair) || isBothPairValuesNotNull(pair)) {
+        if (isNull(pair) || !isBothPairValuesNotNull(pair)) {
             return true;
         }
 

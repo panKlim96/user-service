@@ -1,4 +1,4 @@
-package ru.teachbase.go.facadeuser.feign;
+package ru.teachbase.go.userGateway.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import ru.teachbase.go.model.UserResponse;
 
 @FeignClient(url = "${feign.user-app.url}",
-        path = "/api/v1/user/getUserById/{id}",
+        //path = "/api/v1/user/getUserById/{id}",
         name = "user-app")
 public interface UserServiceClient {
 

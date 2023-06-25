@@ -23,6 +23,7 @@ public class UserSpecification extends AbstractSpecification<UserEntity> {
     protected @NonNull Stream<Predicate> getPredicates(Root<UserEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder cb) {
         return Stream.of(
                 likeValue(root, cb, UserEntity_.NAME, userCriteriaFilter.getLikeName()),
+                likeValue(root, cb, UserEntity_.EMAIL, userCriteriaFilter.getLikeEmail()),
                 betweenDates(root, cb, UserEntity_.DATE_OF_BIRTH, Pair.of(userCriteriaFilter.getStartDate(),
                         userCriteriaFilter.getEndDate())),
                 //equalsValue(root, cb, UserEntity_., userCriteriaFilter.ema),

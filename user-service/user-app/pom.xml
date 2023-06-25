@@ -12,15 +12,15 @@
     <artifactId>user-app</artifactId>
     <packaging>jar</packaging>
 
+    <properties>
+        <stubs.version>1.0.0</stubs.version>
+        <docker.dockerArchive></docker.dockerArchive>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-jpamodelgen</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -94,23 +94,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-dependencies</artifactId>
             <type>pom</type>
-            <scope>import</scope>
+            <scope>test</scope>
         </dependency>
-
-
-        <!-- simulates actual service (Wiremock by default)-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-contract-verifier</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-contract-converters</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.cloud</groupId>-->
-<!--            <artifactId>spring-cloud-contract-stub-runner</artifactId>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
@@ -138,6 +127,26 @@
                 <extensions>true</extensions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>stubs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>
+                                    ${project.basedir}\src\assembly\stubs.xml
+                                </descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
@@ -154,6 +163,100 @@
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>fmp</id>
+                        <goals>
+                            <goal>resource</goal>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>${project.artifactId}:${project.version}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <docker.dockerArchive>${project.basedir}\target\docker\user-app\0.0.1-SNAPSHOT\tmp\docker-build.tar</docker.dockerArchive>
+                                <ports>
+                                    <port>9080</port>
+                                    <port>8081</port>
+                                </ports>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <from>
+                        <image>openjdk:11-jdk-slim</image>
+                    </from>
+                    <to>
+                        <image>user_app_image</image>
+                    </to>
+                    <container>
+                        <mainClass>ru.teachbase.go.UserServiceApplication.java</mainClass>
+                        <ports>
+                            <port>9080</port>
+                            <port>8081</port>
+                        </ports>
+                    </container>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>buildTar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>install-stubs</id>
+            <activation>
+                <property>
+                    <name>!skipTests</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>install-stubs</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>
+                                        install-file
+                                    </goal>
+                                </goals>
+                                <configuration>
+                                    <file>${project.build.directory}/${project.build.finalName}-stubs.jar</file>
+                                    <groupId>${project.groupId}</groupId>
+                                    <artifactId>${project.artifactId}-stubs</artifactId>
+                                    <version>${stubs.version}</version>
+                                    <packaging>jar</packaging>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

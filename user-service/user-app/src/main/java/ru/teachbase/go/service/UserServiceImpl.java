@@ -1,9 +1,9 @@
 package ru.teachbase.go.service;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,27 +21,21 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    @NonNull
-    private UserRepository userRepository;
-    @NonNull
-    private ModelMapper modelMapper;
+
+    private final UserRepository userRepository;
+
+    private final ModelMapper modelMapper;
 
     @Override
     @Transactional
     public void createUser(UserRequest userRequest) {
-        //userRequest.getUser().setAccounts(null);
-       // userRepository.save(modelMapper.map(userRequest.getUser(), UserEntity.class));
+       userRepository.save(modelMapper.map(userRequest.getUser(), UserEntity.class));
     }
 
     @Override
     @Transactional
     public void deleteUserById(Integer id) {
         userRepository.deleteById(id);
-
-//        boolean flag = true;
-//        while (flag){
-//
-//        }
     }
 
     @Override
@@ -54,28 +48,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(UserRequest userRequest) {
-//        Optional<UserEntity> user = userRepository.findById(userRequest.getUser().getId());
-//        if (user.isPresent()) {
-//            if (nonNull(userRequest.getUser().getEmail())) {
-//                user.get().setEmail(userRequest.getUser().getEmail());
-//            }
-//            if (nonNull(userRequest.getUser().getPassword())) {
-//                user.get().setPassword(userRequest.getUser().getPassword());
-//            }
-//            if (nonNull(userRequest.getUser().getDateOfBirth())) {
-//                user.get().setDateOfBirth(userRequest.getUser().getDateOfBirth());
-//            }
-//        }
-    }
-
-    @Override
     @Transactional(readOnly = true)
     public PageUserResponse getUserByFilter(@NotNull UserCriteriaFilter userCriteriaFilter) {
         Specification<UserEntity> specification = new UserSpecification(userCriteriaFilter);
         PageRequest pageRequest = PageRequest.of(userCriteriaFilter.getPageNumber(),
                 userCriteriaFilter.getPageSize(),
-                null);
+                Sort.unsorted());
         return modelMapper.map(userRepository.findAll(specification, pageRequest), PageUserResponse.class);
     }
 }

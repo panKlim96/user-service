@@ -46,22 +46,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/UserResponse'
 
-  /api/v1/user/updateUser:
-    post:
-      summary: update user
-      operationId: updateUser
-      tags:
-        - User
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UserRequest'
-      responses:
-        '200':
-          description: Updated
-
   /api/v1/user/deleteUserById/{id}:
     post:
       summary: delete user by ID

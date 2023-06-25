@@ -19,17 +19,9 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        //modelMapper.getConfiguration().setPreferNestedProperties()
-
-//        modelMapper.createTypeMap(AccountDto.class, AccountEntity.class)
-//                .addMappings(mapper -> mapper.map(AccountDto::getUser, AccountEntity::setUserEntity));
 
         modelMapper.createTypeMap(AccountEntity.class, AccountDto.class)
                 .addMappings(mapper -> mapper.map(src -> src.getUserEntity().getId(), AccountDto::setUserId));
-
-//        modelMapper.createTypeMap(UserEntity.class, UserDto.class)
-//                .addMappings(mapper -> mapper.map(UserEntity::getAccounts, UserDto::setAccounts))
-
 //        ДЛЯ ЦИКЛИЧЕСКИХ ЗАВИСИМОСТЕЙ
 //        modelMapper.addMappings(new PropertyMap<UserEntity, UserDto>() {
 //            @Override

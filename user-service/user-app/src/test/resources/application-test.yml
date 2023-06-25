@@ -2,6 +2,9 @@ spring:
   h2:
     console:
       enabled: true
+  application:
+    name:
+      '@project.artifactId@'
   jpa:
     hibernate:
       ddl-auto: none

@@ -1,0 +1,76 @@
+{
+  "content": [
+    {
+      "id": 3,
+      "name": "Razov Anatoliy Victorovich",
+      "password": "ersfre",
+      "email": "razov@yandex.ru",
+      "dateOfBirth": [
+        2012,
+        12,
+        3
+      ],
+      "accounts": [
+        {
+          "id": 1,
+          "balance": 345.4,
+          "userId": 3
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Dolin Victor Sergeevich",
+      "password": "edwedwe",
+      "email": "dolin@yandex.ru",
+      "dateOfBirth": [
+        2003,
+        8,
+        3
+      ],
+      "accounts": [
+        {
+          "id": 2,
+          "balance": 3344.4,
+          "userId": 4
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Jhon",
+      "password": "edwedwe",
+      "email": "dolin@yandex.ru",
+      "dateOfBirth": [
+        2003,
+        8,
+        3
+      ]
+    }
+  ],
+  "totalElements": 3,
+  "totalPages": 1,
+  "size": 5,
+  "number": 0,
+  "sort": {
+    "sorted": false,
+    "unsorted": true,
+    "empty": true
+  },
+  "first": true,
+  "pageable": {
+    "sort": {
+      "empty": true,
+      "unsorted": true,
+      "sorted": false
+    },
+    "offset": 0,
+    "pageSize": 5,
+    "pageNumber": 0,
+    "unpaged": false,
+    "paged": true
+  },
+  "numberOfElements": 3,
+  "last": true,
+  "empty": null
+}

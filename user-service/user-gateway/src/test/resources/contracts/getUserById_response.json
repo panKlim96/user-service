@@ -1,0 +1,9 @@
+{
+  "user": {
+    "id": 6,
+    "name": "Jhon",
+    "password": "edwedwe",
+    "email": "dolin@yandex.ru",
+    "dateOfBirth": [2003,8,3]
+  }
+}

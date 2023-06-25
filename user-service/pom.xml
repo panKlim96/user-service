@@ -25,6 +25,7 @@
         <swagger-core-version>1.6.5</swagger-core-version>
         <org.hibernate.version>5.6.9.Final</org.hibernate.version>
         <org.projectlombok.version>1.18.26</org.projectlombok.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
         <spring-cloud-contract.version>3.0.3</spring-cloud-contract.version>
     </properties>
 
@@ -82,11 +83,6 @@
                 <version>2.1.214</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>5.2.17.Final</version>
-            </dependency>
-            <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>5.8.2</version>
@@ -142,6 +138,11 @@
         <pluginManagement>
             <plugins>
                 <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>fabric8-maven-plugin</artifactId>
+                    <version>4.4.0</version>
+                </plugin>
+                <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
                     <configuration>
@@ -181,13 +182,36 @@
                     <extensions>true</extensions>
                 </plugin>
                 <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.22.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>${maven-assembly-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.4</version>
+                    <executions>
+                        <execution>
+                            <phase>validate</phase>
+                            <goals>
+                                <goal>create</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <buildNumberPropertiesFileLocation>
+                            ${project.basedir}/buildNumber.properties
+                        </buildNumberPropertiesFileLocation>
+                        <format>{0, number}</format>
+                        <itrms>
+                            <item>buildNumber</item>
+                        </itrms>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>

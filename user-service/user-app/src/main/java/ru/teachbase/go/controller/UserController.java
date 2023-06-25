@@ -40,10 +40,4 @@ public class UserController implements UserApi {
     public ResponseEntity<UserResponse> getUserById(Integer id) {
         return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
-
-    @Override
-    public ResponseEntity<Void> updateUser(UserRequest updateUser) {
-        userService.updateUser(updateUser);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

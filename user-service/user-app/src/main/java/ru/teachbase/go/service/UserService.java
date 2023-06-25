@@ -13,7 +13,5 @@ public interface UserService {
 
     UserResponse getUserById(Integer id);
 
-    void updateUser(UserRequest updateUser);
-
     PageUserResponse getUserByFilter(UserCriteriaFilter userCriteriaFilter);
 }

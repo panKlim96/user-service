@@ -1,5 +1,6 @@
 package ru.teachbase.go.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @Table(name = "ACCOUNT_ENTITY", schema = "ACCOUNT_ENTITY")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,8 +35,5 @@ public class AccountEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn( name = "USER_ENTITY_ID")
     private UserEntity userEntity;
-
-    @Column(name = "USER_ENTITY_ID", insertable = false, updatable = false)
-    private Integer userEntityId;
 
 }
